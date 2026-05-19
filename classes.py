@@ -40,6 +40,7 @@ class Player :
                 self.stats[potion.stat_to_boost] += potion.amount
             else:
                 self.buffs[potion.stat_to_boost] += potion.amount
+        self.inventory.remove(potion)
     
     def equip(self, item):
         if item in self.inventory:
@@ -148,10 +149,12 @@ class Potion(Item):
         self.perm_boost = perm_boost
 
 class Monster:
-    def __init__(self, name, atk_pwr, def_pwr, hp, gold_value):
+    def __init__(self, name, atk_pwr, def_pwr, hp, dex, gold_value):
         self.name = name
         self.atk_pwr = atk_pwr
         self.def_pwr = def_pwr
         self.hp = hp
+        self.current_hp = hp
+        self.dex = dex
         self.gold_value = gold_value
 
