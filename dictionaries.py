@@ -3,10 +3,10 @@ from classes import *
 ITEM_DICT = {
     # Weapons: name, gold_value, hit_mod, attack_power, to_hit_stat, lvl_req
     # TIER 1 Starter Gear (Hit Mods buffed from +1/+2 to +4/+5 to counter low starter stats)
-    "Bronze Sword": Weapon("Bronze Sword", 50, 4, 4, "str", 1),
-    "Iron Dagger": Weapon("Iron Dagger", 40, 5, 3, "dex", 1),
-    "Hunting Bow": Weapon("Hunting Bow", 65, 4, 5, "dex", 1),
-    "Wooden Staff": Weapon("Wooden Staff", 30, 5, 2, "wis", 1), # Buffed to +5 hit so Mages don't miss Slimes!
+    "Bronze Sword": Weapon("Bronze Sword", 50, 6, 4, "str", 1),
+    "Iron Dagger": Weapon("Iron Dagger", 40, 6, 3, "dex", 1),
+    "Hunting Bow": Weapon("Hunting Bow", 65, 6, 5, "dex", 1),
+    "Wooden Staff": Weapon("Wooden Staff", 30, 6, 2, "wis", 1), 
     
     # TIER 2 Mid-Game Gear (Added new choices and scaled hit/power)
     "Iron Mace": Weapon("Iron Mace", 90, 5, 5, "str", 2),

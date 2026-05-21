@@ -28,6 +28,9 @@ def combat(player, monsters):
                     print("Invalid target\n")
                 else:
                     target_enemy = monsters[target]
+                    if target_enemy.current_hp == 0:
+                        print("That enemy is already dead")
+                        continue
                     break
             attack_mod = max(0, ((player.stats[player.equipped_weapon.to_hit_stat] + (player.buffs[player.equipped_weapon.to_hit_stat]) - 10) // 2))
             if attack_mod + random.randint(1,20) + player.equipped_weapon.hit_mod > target_enemy.dex + random.randint(1,20):
@@ -45,9 +48,12 @@ def combat(player, monsters):
 
         elif action == "2":
             potions = [item for item in player.inventory if isinstance(item, Potion)]
+            if len(potions) == 0:
+                print("No potions in inventory\n")
+                continue
             for index, potion in enumerate(potions):
                 print(f"[{index}] {potion.name}")
-            while True:
+            while len(potions) > 0:
                 potion_string = input("Which potion would you like to use?\n")
                 try: 
                     potion = int(potion_string)
@@ -68,6 +74,7 @@ def combat(player, monsters):
 
         else:
             print("Invalid input, please make a selection with 1, 2, or 3\n")
+            continue
         
         player_dex_modifier = max(0, (player.stats["dex"] + player.buffs["dex"] - 10) // 2)
         for monster in monsters: 
@@ -81,7 +88,17 @@ def combat(player, monsters):
                     print(f"The {monster.name} attacks and does {monster_damage} damage to you\n")
                 else:
                     print(f"The {monster.name} tries to attack, but misses\n")
-
+    if player.current_hp == 0:
+        print("Your adventure has come to an end. Farewell Hero!")
+        return
+    if all(monster.current_hp == 0 for monster in monsters):
+        print("Victory. All monsters have been slain")
+        gold = 0
+        for monster in monsters:
+            gold += monster.gold_value
+        player.wallet += gold
+        print(f"You recieve {gold}gp\n")
+        return
 
 
             

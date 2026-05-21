@@ -7,6 +7,7 @@ class Player :
 
         self.name = name
         self.level = level
+        self.exp = 0
         self.player_class = player_class
         self.stats = stats
         self.max_hp_buff = 0
@@ -15,6 +16,7 @@ class Player :
         self.equipped_shield = ITEM_DICT[starting_gear[1]]
         self.current_hp = self.max_hp
         self.inventory = [ITEM_DICT[i] for i in starting_gear]
+        self.wallet = 0
         self.buffs ={
             "str": 0,
             "dex": 0,
@@ -25,19 +27,23 @@ class Player :
     def max_hp(self):
         if self.equipped_armor != None:
             return max(12, self.stats["con"] * 2) + self.max_hp_buff + self.equipped_armor.hp_modifier
-        return max(15, self.stats["con"] * 2) + self.max_hp_buff
+        return max(12, self.stats["con"] * 2) + self.max_hp_buff
 
 
     def drink_potion(self, potion):
         if potion.stat_to_boost == "hp":
+            if self.current_hp + potion.amount < self.max_hp:
+                print(f"You heal {potion.amount} hitpoints\n")
+            else:
+                print(f"You heal {self.max_hp - self.current_hp} hitpoints\n")
             self.current_hp = min(self.max_hp, self.current_hp + potion.amount)
         elif potion.stat_to_boost =="max_hp":
             self.max_hp_buff += potion.amount
+            print(f"Your maximum hitpoints increase by {potion.amount}\n")
         else:
-            if potion.perm_boost:
-                self.stats[potion.stat_to_boost] += potion.amount
-            else:
-                self.buffs[potion.stat_to_boost] += potion.amount
+            self.stats[potion.stat_to_boost] += potion.amount
+            print(f"Your {potion.stat_to_boost} increased by {potion.amount}\n")
+
         self.inventory.remove(potion)
     
     def equip(self, item):
@@ -64,10 +70,10 @@ class Player :
 class Warrior(Player):
     def __init__(self, name, player_class="Warrior", level=1):
         stats = {
-        "str": random.randint(10, 16), 
-        "dex": random.randint(5, 16), 
-        "con": random.randint(8, 16), 
-        "wis": random.randint(3, 12)
+        "str": random.randint(12, 22), 
+        "dex": random.randint(4, 14), 
+        "con": random.randint(8, 18), 
+        "wis": random.randint(1, 11)
         }
         starting_gear = ["Bronze Sword", "Wooden Shield", "Woolen Tunic"]
         super().__init__(name, player_class, stats, starting_gear, level)
@@ -75,10 +81,10 @@ class Warrior(Player):
 class Ranger(Player):
     def __init__(self, name, player_class="Ranger", level=1):
         stats = {
-        "str": random.randint(8, 14), 
-        "dex": random.randint(10, 16), 
-        "con": random.randint(6, 14), 
-        "wis": random.randint(5, 12),
+        "str": random.randint(8, 18), 
+        "dex": random.randint(12, 22), 
+        "con": random.randint(4, 14), 
+        "wis": random.randint(2, 12),
         }
         starting_gear = ["Hunting Bow", "Hide Bracer", "Woolen Tunic"]
         super().__init__(name, player_class, stats, starting_gear, level)
@@ -86,10 +92,10 @@ class Ranger(Player):
 class Mage(Player):
     def __init__(self, name, player_class="Mage", level=1):
         stats = {
-        "str": random.randint(3, 10), 
-        "dex": random.randint(5, 16), 
-        "con": random.randint(4, 12), 
-        "wis": random.randint(8, 16),
+        "str": random.randint(1, 11), 
+        "dex": random.randint(6, 16), 
+        "con": random.randint(4, 14), 
+        "wis": random.randint(12, 22),
         }
         starting_gear = ["Wooden Staff", "Bronze Circlet", "Linen Robe"]
         super().__init__(name, player_class, stats, starting_gear, level)
@@ -97,10 +103,10 @@ class Mage(Player):
 class Rogue(Player):
     def __init__(self, name, player_class="Rogue", level=1):
         stats = {
-        "str": random.randint(6, 14), 
-        "dex": random.randint(8, 16), 
-        "con": random.randint(6, 14),  
-        "wis": random.randint(3, 12),
+        "str": random.randint(4, 14), 
+        "dex": random.randint(12, 22), 
+        "con": random.randint(6, 16),  
+        "wis": random.randint(6, 16),
         }
         starting_gear = ["Iron Dagger", "Leather Armband", "Woolen Cape"]
         super().__init__(name, player_class, stats, starting_gear, level)
