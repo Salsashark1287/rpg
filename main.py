@@ -1,7 +1,9 @@
 import random
+import copy
 from classes import *
 from dictionaries import *
 from combat import *
+
 
 def main():
     hero_name = input("Greetings adventurer! Welcome to the mystical land of Castille. What is your name?\n")
@@ -16,10 +18,10 @@ def main():
         hero = Rogue(hero_name)
     else:
         return(print("Class not found"))
-    print(f"Name:{hero.name}\n Level:{hero.level} {hero.player_class}\n STR:{hero.stats["str"]} DEX:{hero.stats["dex"]} CON:{hero.stats["con"]} INT:{hero.stats["int"]} WIS:{hero.stats["wis"]} CHA:{hero.stats["cha"]}")
+    print(f"Name:{hero.name}\n Level:{hero.level} {hero.player_class}\n STR:{hero.stats["str"]} DEX:{hero.stats["dex"]} CON:{hero.stats["con"]} WIS:{hero.stats["wis"]}")
     #Combat Test
     print("Practice battle")
-    enemies = [ENEMY_DICT["Slime"], ENEMY_DICT["Slime"], ENEMY_DICT["Slime"]]
+    enemies = [copy.deepcopy(ENEMY_DICT["Slime"]), copy.deepcopy(ENEMY_DICT["Slime"]), copy.deepcopy(ENEMY_DICT["Slime"])]
     hero.inventory.append(ITEM_DICT["Minor Healing Potion"])
     combat(hero, enemies)
 

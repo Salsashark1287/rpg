@@ -19,9 +19,7 @@ class Player :
             "str": 0,
             "dex": 0,
             "con": 0,
-            "int": 0,
-            "wis": 0,
-            "cha": 0
+            "wis": 0
         }
     @property
     def max_hp(self):
@@ -69,9 +67,7 @@ class Warrior(Player):
         "str": random.randint(10, 16), 
         "dex": random.randint(5, 16), 
         "con": random.randint(8, 16), 
-        "int": random.randint(3, 12), 
-        "wis": random.randint(3, 12),
-        "cha": random.randint(6, 16)
+        "wis": random.randint(3, 12)
         }
         starting_gear = ["Bronze Sword", "Wooden Shield", "Woolen Tunic"]
         super().__init__(name, player_class, stats, starting_gear, level)
@@ -82,9 +78,7 @@ class Ranger(Player):
         "str": random.randint(8, 14), 
         "dex": random.randint(10, 16), 
         "con": random.randint(6, 14), 
-        "int": random.randint(5, 12), 
         "wis": random.randint(5, 12),
-        "cha": random.randint(8, 16)
         }
         starting_gear = ["Hunting Bow", "Hide Bracer", "Woolen Tunic"]
         super().__init__(name, player_class, stats, starting_gear, level)
@@ -95,9 +89,7 @@ class Mage(Player):
         "str": random.randint(3, 10), 
         "dex": random.randint(5, 16), 
         "con": random.randint(4, 12), 
-        "int": random.randint(8, 16), 
         "wis": random.randint(8, 16),
-        "cha": random.randint(8, 16)
         }
         starting_gear = ["Wooden Staff", "Bronze Circlet", "Linen Robe"]
         super().__init__(name, player_class, stats, starting_gear, level)
@@ -107,10 +99,8 @@ class Rogue(Player):
         stats = {
         "str": random.randint(6, 14), 
         "dex": random.randint(8, 16), 
-        "con": random.randint(6, 14), 
-        "int": random.randint(8, 14), 
+        "con": random.randint(6, 14),  
         "wis": random.randint(3, 12),
-        "cha": random.randint(10, 16)
         }
         starting_gear = ["Iron Dagger", "Leather Armband", "Woolen Cape"]
         super().__init__(name, player_class, stats, starting_gear, level)
@@ -123,10 +113,10 @@ class Item :
         self.gold_value = gold_value
 
 class Weapon(Item):
-    def __init__(self, name, gold_value, atk_modifier, dmg_modifier, to_hit_stat, lvl_req, item_type = "Weapon"):
+    def __init__(self, name, gold_value, hit_mod, attack_power, to_hit_stat, lvl_req, item_type = "Weapon"):
         super().__init__(name, gold_value, item_type)
-        self.atk_modifier = atk_modifier
-        self.dmg_modifier = dmg_modifier
+        self.hit_mod = hit_mod
+        self.attack_power = attack_power
         self.to_hit_stat = to_hit_stat
         self.lvl_req = lvl_req
 

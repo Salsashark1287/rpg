@@ -29,20 +29,61 @@ def combat(player, monsters):
                 else:
                     target_enemy = monsters[target]
                     break
+            attack_mod = max(0, ((player.stats[player.equipped_weapon.to_hit_stat] + (player.buffs[player.equipped_weapon.to_hit_stat]) - 10) // 2))
+            if attack_mod + random.randint(1,20) + player.equipped_weapon.hit_mod > target_enemy.dex + random.randint(1,20):
+                player_damage = attack_mod
+                for i in range(player.equipped_weapon.attack_power):
+                    player_damage += random.randint(1,4)
+                player_damage = max(1, player_damage - target_enemy.def_pwr)
+                print(f"You deal {player_damage} to the {target_enemy.name}\n")
+                target_enemy.current_hp = max(0, target_enemy.current_hp - player_damage)
+                if target_enemy.current_hp == 0:
+                    print(f"The {target_enemy.name} dies\n")
+            else:
+                print(f"Your attack misses the {target_enemy.name}\n")
+
+
         elif action == "2":
-                potions = [item for item in player.inventory if isinstance(item, Potion)]
-                for index, potion in enumerate(potions):
-                    print(f"[{index}] {potion.name}")
-                while True:
-                    potion_string = input("Which potion would you like to use?\n")
-                    try: 
-                        potion = int(potion_string)
-                    except ValueError:
-                        print("Invalid selection. Must be a digit.\n")
-                        continue
-                    if potion < 0 or potion > len(potions) - 1 :
-                        print("Invalid selection\n")
-                    else:
-                        player.drink_potion(potions[potion])
-                        break
+            potions = [item for item in player.inventory if isinstance(item, Potion)]
+            for index, potion in enumerate(potions):
+                print(f"[{index}] {potion.name}")
+            while True:
+                potion_string = input("Which potion would you like to use?\n")
+                try: 
+                    potion = int(potion_string)
+                except ValueError:
+                    print("Invalid selection. Must be a digit.\n")
+                    continue
+                if potion < 0 or potion > len(potions) - 1 :
+                    print("Invalid selection\n")
+                else:
+                    player.drink_potion(potions[potion])
+                    break
+
+        elif action == "3":
+            player_run = player.stats["dex"] + player.buffs["dex"] + random.randint(1,20)
+            if all(player_run > monster.dex for monster in monsters if monster.hp > 0):
+                print("You manage to run away!\n")
+                return
+
+        else:
+            print("Invalid input, please make a selection with 1, 2, or 3\n")
+        
+        player_dex_modifier = max(0, (player.stats["dex"] + player.buffs["dex"] - 10) // 2)
+        for monster in monsters: 
+            if monster.current_hp > 0:
+                if monster.dex + random.randint(1,20) >  player_dex_modifier + random.randint(1,20) + player.equipped_shield.def_modifier:
+                    monster_damage = 0
+                    for i in range(monster.atk_pwr):
+                        monster_damage += random.randint(1,4)
+                    monster_damage = max(1, monster_damage - player.equipped_armor.def_modifier)
+                    player.current_hp -= monster_damage
+                    print(f"The {monster.name} attacks and does {monster_damage} damage to you\n")
+                else:
+                    print(f"The {monster.name} tries to attack, but misses\n")
+
+
+
+            
+
 
