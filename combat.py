@@ -50,7 +50,7 @@ def combat(player, monsters):
                 for i in range(player.equipped_weapon.attack_power):
                     player_damage += random.randint(1,4)
                 player_damage = max(1, player_damage - target_enemy.def_pwr)
-                print(f"You deal {player_damage} to the {target_enemy.name}\n")
+                print(f"You deal {player_damage} damage to the {target_enemy.name}\n")
                 target_enemy.current_hp = max(0, target_enemy.current_hp - player_damage)
                 if target_enemy.current_hp == 0:
                     print(f"The {target_enemy.name} dies\n")

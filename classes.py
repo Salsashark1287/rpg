@@ -7,7 +7,6 @@ class Player :
 
         self.name = name
         self.level = level
-        self.exp = 0
         self.player_class = player_class
         self.stats = stats
         self.max_hp_buff = 0
@@ -94,7 +93,7 @@ class Warrior(Player):
         "con": random.randint(8, 18), 
         "wis": random.randint(1, 11)
         }
-        starting_gear = ["Bronze Sword", "Wooden Shield", "Woolen Tunic"]
+        starting_gear = ["Bronze Sword", "Wooden Shield", "Woolen Tunic", "Minor Healing Potion"]
         super().__init__(name, player_class, stats, starting_gear, level)
         self.stat_priority = ["str", "con", "dex", "wis"]
 
@@ -106,7 +105,7 @@ class Ranger(Player):
         "con": random.randint(4, 14), 
         "wis": random.randint(2, 12),
         }
-        starting_gear = ["Hunting Bow", "Hide Bracer", "Woolen Tunic"]
+        starting_gear = ["Hunting Bow", "Hide Bracer", "Woolen Tunic", "Minor Healing Potion"]
         super().__init__(name, player_class, stats, starting_gear, level)
         self.stat_priority = ["dex", "str", "con", "wis"]
 
@@ -118,7 +117,7 @@ class Mage(Player):
         "con": random.randint(4, 14), 
         "wis": random.randint(12, 22),
         }
-        starting_gear = ["Wooden Staff", "Bronze Circlet", "Linen Robe"]
+        starting_gear = ["Wooden Staff", "Bronze Circlet", "Linen Robe", "Minor Healing Potion"]
         super().__init__(name, player_class, stats, starting_gear, level)
         self.stat_priority = ["wis", "dex", "con", "str"]
 
@@ -130,7 +129,7 @@ class Rogue(Player):
         "con": random.randint(2, 12),  
         "wis": random.randint(6, 16),
         }
-        starting_gear = ["Iron Dagger", "Leather Armband", "Woolen Cape"]
+        starting_gear = ["Iron Dagger", "Leather Armband", "Woolen Cape", "Minor Healing Potion"]
         super().__init__(name, player_class, stats, starting_gear, level)
         self.stat_priority = ["dex", "wis", "str", "con"]
 
