@@ -2,36 +2,48 @@ from classes import *
 from dictionaries import *
 import copy
 import random
+import os
 
 
 def combat(player, monsters):
     print(f"Watch out {player.name}! A battle begins.\n")
     while player.current_hp > 0 and any([monster.current_hp > 0 for monster in monsters]):
         print(f"=================== COMBAT ===================\n{player.name} {player.current_hp}/{player.max_hp}\n----------------------------------------------")
-        for index, monster in enumerate(monsters):
+        for monster in monsters:
             if monster.current_hp > 0:
-                print(f"[{index}]{monster.name}-HP:{monster.current_hp}")
+                print(f"{monster.name}-HP:{monster.current_hp}")
         #Select Action
         action = input("Choose your action:(Type the number)\n[1] Attack\n[2] Use Item\n[3] Run\n")
+        os.system('clear')
         if action == "1":
             while True:
-                target_string = input("Which enemy do you choose to attack?\n")
-                try:
-                    target = int(target_string)
-                except ValueError:
-                    print("Invalid target. Must be a digit.\n")
-                    continue
-                
-                if target > len(monsters) - 1:
-                    print("There aren't that many enemies in this encounter hero!\n")
-                elif target < 0:
-                    print("Invalid target\n")
-                else:
-                    target_enemy = monsters[target]
-                    if target_enemy.current_hp == 0:
-                        print("That enemy is already dead")
-                        continue
+                live_monsters = []
+                for index, monster in enumerate(monsters):
+                    if monster.current_hp > 0:
+                        print(f"[{index}]{monster.name}-HP:{monster.current_hp}")
+                        live_monsters.append(monster)
+                if len(live_monsters) == 1:
+                    target_enemy = live_monsters[0]
                     break
+                else:
+                    target_string = input("Which enemy do you choose to attack?\n")
+                    os.system('clear')
+                    try:
+                        target = int(target_string)
+                    except ValueError:
+                        print("Invalid target. Must be a digit.\n")
+                        continue
+                    
+                    if target > len(monsters) - 1:
+                        print("There aren't that many enemies in this encounter hero!\n")
+                    elif target < 0:
+                        print("Invalid target\n")
+                    else:
+                        target_enemy = monsters[target]
+                        if target_enemy.current_hp == 0:
+                            print("That enemy is already dead\n")
+                            continue
+                        break
             attack_mod = max(0, ((player.stats[player.equipped_weapon.to_hit_stat] + (player.buffs[player.equipped_weapon.to_hit_stat]) - 10) // 2))
             if attack_mod + random.randint(1,20) + player.equipped_weapon.hit_mod > target_enemy.dex + random.randint(1,20):
                 player_damage = attack_mod
@@ -42,6 +54,10 @@ def combat(player, monsters):
                 target_enemy.current_hp = max(0, target_enemy.current_hp - player_damage)
                 if target_enemy.current_hp == 0:
                     print(f"The {target_enemy.name} dies\n")
+                    player.current_exp += target_enemy.exp
+                    print(f"You gain {target_enemy.exp} experience.\n")
+                    if player.current_exp >= player.exp_to_level:
+                        player.level_up()
             else:
                 print(f"Your attack misses the {target_enemy.name}\n")
 
@@ -55,10 +71,10 @@ def combat(player, monsters):
                 print(f"[{index}] {potion.name}")
             while len(potions) > 0:
                 potion_string = input("Which potion would you like to use?\n")
+                os.system('clear')
                 try: 
                     potion = int(potion_string)
                 except ValueError:
-                    print("Invalid selection. Must be a digit.\n")
                     continue
                 if potion < 0 or potion > len(potions) - 1 :
                     print("Invalid selection\n")
@@ -73,7 +89,6 @@ def combat(player, monsters):
                 return
 
         else:
-            print("Invalid input, please make a selection with 1, 2, or 3\n")
             continue
         
         player_dex_modifier = max(0, (player.stats["dex"] + player.buffs["dex"] - 10) // 2)

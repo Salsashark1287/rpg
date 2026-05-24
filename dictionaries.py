@@ -55,23 +55,23 @@ ITEM_DICT = {
 }
 
 ENEMY_DICT = {
-    # name, atk_pwr, def_pwr, hp, dex, gold_value
+    # name, atk_pwr, def_pwr, hp, dex, gold_value, exp
     
     # Tier 1: Level 1-2 Fodder
-    "Giant Rat": Monster("Giant Rat", 2, 1, 10, 1, 5),
-    "Slime": Monster("Slime", 1, 3, 15, 3, 8),
-    "Goblin": Monster("Goblin", 3, 2, 18, 7, 12),
+    "Giant Rat": Monster("Giant Rat", 2, 1, 10, 1, 5, 5),
+    "Slime": Monster("Slime", 1, 3, 15, 3, 8, 200),
+    "Goblin": Monster("Goblin", 3, 2, 18, 7, 12, 12),
     
     # Tier 2: Mid-Game Threats
-    "Bandit": Monster("Bandit", 5, 2, 25, 10, 20),
-    "Skeleton Warrior": Monster("Skeleton Warrior", 6, 4, 30, 15, 25),
-    "Orc Grunt": Monster("Orc Grunt", 8, 3, 45, 25, 40),
+    "Bandit": Monster("Bandit", 5, 2, 25, 10, 20, 20),
+    "Skeleton Warrior": Monster("Skeleton Warrior", 6, 4, 30, 15, 25, 25),
+    "Orc Grunt": Monster("Orc Grunt", 8, 3, 45, 25, 40, 40),
     
     # Tier 3: Late-Game Heavy Hitters
-    "Cave Troll": Monster("Cave Troll", 12, 6, 80, 30, 75),
-    "Gargoyle": Monster("Gargoyle", 10, 12, 70, 35, 90),
+    "Cave Troll": Monster("Cave Troll", 12, 6, 80, 30, 75, 75),
+    "Gargoyle": Monster("Gargoyle", 10, 12, 70, 35, 90, 90),
     
     # Tier 4: Bosses
-    "Vampire Lord": Monster("Vampire Lord", 18, 10, 150, 40, 250),
-    "Elder Dragon": Monster("Elder Dragon", 25, 15, 300, 50, 500)
+    "Vampire Lord": Monster("Vampire Lord", 18, 10, 150, 40, 250, 250),
+    "Elder Dragon": Monster("Elder Dragon", 25, 15, 300, 50, 500, 500),
 }

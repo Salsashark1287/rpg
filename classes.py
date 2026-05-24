@@ -17,6 +17,7 @@ class Player :
         self.current_hp = self.max_hp
         self.inventory = [ITEM_DICT[i] for i in starting_gear]
         self.wallet = 0
+        self.current_exp = 0
         self.buffs ={
             "str": 0,
             "dex": 0,
@@ -29,6 +30,9 @@ class Player :
             return max(12, self.stats["con"] * 2) + self.max_hp_buff + self.equipped_armor.hp_modifier
         return max(12, self.stats["con"] * 2) + self.max_hp_buff
 
+    @property
+    def exp_to_level(self):
+        return int(100.0 * 1.10**(self.level - 1))
 
     def drink_potion(self, potion):
         if potion.stat_to_boost == "hp":
@@ -55,18 +59,33 @@ class Player :
                     self.equipped_weapon = item
                     return self.equipped_weapon
             elif isinstance(item, Armor):
+                hp_diff = item.hp_modifier - self.equipped_armor.hp_modifier 
+                if hp_diff + self.current_hp <= 0:
+                    return f"Health too low to remove {self.equipped_armor}"
                 self.equipped_armor = item
+                self.current_hp += hp_diff
                 return self.equipped_armor
             elif isinstance(item, Shield):
                 self.equipped_shield = item
                 return self.equipped_shield
             else:
-                return print("Item is not equippable")
+                return print("Item is not equippable\n")
+        return print("Item not found in inventory\n")
 
-        return print("Item not found in inventory")
+    def level_up(self):
+        while self.current_exp >= self.exp_to_level:
+            rolls = []
+            for i in range(4):
+                rolls.append(random.randint(1,4))
+            rolls.sort(reverse=True)
+            for i in range(4):
+                self.stats[self.stat_priority[i]] += rolls[i]
+            print (f"You grew to level {self.level + 1}\n\nYou gain {rolls[0]} {self.stat_priority[0]}, {rolls[1]} {self.stat_priority[1]}, {rolls[2]} {self.stat_priority[2]}, {rolls[3]} {self.stat_priority[3]}\n")
+            self.current_exp = self.current_exp - self.exp_to_level
+            self.level += 1
+            self.current_hp = self.max_hp
 
-        
-
+             
 class Warrior(Player):
     def __init__(self, name, player_class="Warrior", level=1):
         stats = {
@@ -77,6 +96,7 @@ class Warrior(Player):
         }
         starting_gear = ["Bronze Sword", "Wooden Shield", "Woolen Tunic"]
         super().__init__(name, player_class, stats, starting_gear, level)
+        self.stat_priority = ["str", "con", "dex", "wis"]
 
 class Ranger(Player):
     def __init__(self, name, player_class="Ranger", level=1):
@@ -88,6 +108,7 @@ class Ranger(Player):
         }
         starting_gear = ["Hunting Bow", "Hide Bracer", "Woolen Tunic"]
         super().__init__(name, player_class, stats, starting_gear, level)
+        self.stat_priority = ["dex", "str", "con", "wis"]
 
 class Mage(Player):
     def __init__(self, name, player_class="Mage", level=1):
@@ -99,18 +120,19 @@ class Mage(Player):
         }
         starting_gear = ["Wooden Staff", "Bronze Circlet", "Linen Robe"]
         super().__init__(name, player_class, stats, starting_gear, level)
+        self.stat_priority = ["wis", "dex", "con", "str"]
 
 class Rogue(Player):
     def __init__(self, name, player_class="Rogue", level=1):
         stats = {
         "str": random.randint(4, 14), 
         "dex": random.randint(12, 22), 
-        "con": random.randint(6, 16),  
+        "con": random.randint(2, 12),  
         "wis": random.randint(6, 16),
         }
         starting_gear = ["Iron Dagger", "Leather Armband", "Woolen Cape"]
         super().__init__(name, player_class, stats, starting_gear, level)
-
+        self.stat_priority = ["dex", "wis", "str", "con"]
 
 class Item :
     def __init__(self, name, gold_value, item_type):
@@ -145,7 +167,7 @@ class Potion(Item):
         self.perm_boost = perm_boost
 
 class Monster:
-    def __init__(self, name, atk_pwr, def_pwr, hp, dex, gold_value):
+    def __init__(self, name, atk_pwr, def_pwr, hp, dex, gold_value, exp):
         self.name = name
         self.atk_pwr = atk_pwr
         self.def_pwr = def_pwr
@@ -153,4 +175,5 @@ class Monster:
         self.current_hp = hp
         self.dex = dex
         self.gold_value = gold_value
+        self.exp = exp
 
